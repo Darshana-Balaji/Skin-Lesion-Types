@@ -1,0 +1,34 @@
+.pwa-controls {
+	margin: 0 12px 12px;
+}
+
+.pwa-button {
+	border: 1px solid #087f8c;
+	border-radius: 6px;
+	background: #fff;
+	color: #075c66;
+	cursor: pointer;
+	font: inherit;
+	padding: 10px 16px;
+}
+
+.pwa-button:hover,
+.pwa-button:focus {
+	background: #e8f5f5;
+}
+
+.pwa-button[hidden] {
+	display: none;
+}
+
+.app-status {
+	color: #404040;
+	font-size: 14px;
+	margin: 8px 0;
+}
+
+.medical-note {
+	font-size: 14px;
+	line-height: 1.5;
+	margin: 12px 20px 24px;
+}

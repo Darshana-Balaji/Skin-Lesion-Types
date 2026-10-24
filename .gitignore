@@ -1,0 +1,9 @@
+/final_model_kaggle_version1/
+/trained_model_7class/
+/trained_model_14class/
+/trained_model_with_rejection/
+/_pycache_/
+.env
+.env.*
+
+_pycache_/

@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>SkinAssess AI | Skin lesion analysis</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="SkinAssess AI helps organize skin lesion image classifications, patient information, and saved analysis reports.">
+  <meta name="theme-color" content="#102b46">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="assets/app-icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/robotfavicon.png">
+  <link rel="stylesheet" href="css/skinassess.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="Main navigation">
+      <a class="brand" href="./" aria-label="SkinAssess AI dashboard">
+        <span class="brand-mark" aria-hidden="true">S</span>
+        <span class="brand-copy"><strong>SkinAssess <em>AI</em></strong><small>Skin lesion analysis</small></span>
+      </a>
+      <p class="nav-label">Workspace</p>
+      <nav class="nav-list">
+        <button class="nav-link is-active" type="button" data-view="intake" aria-current="page">
+          <span class="nav-icon" aria-hidden="true">◉</span><span>Login</span>
+        </button>
+        <button class="nav-link" type="button" data-view="dashboard">
+          <span class="nav-icon" aria-hidden="true">⌂</span>Dashboard
+        </button>
+        <button class="nav-link" type="button" data-view="history">
+          <span class="nav-icon" aria-hidden="true">▤</span>Previous analyses
+        </button>
+      </nav>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div class="breadcrumb"><span>Workspace</span><span aria-hidden="true">/</span><strong id="current-page">Login</strong></div>
+        <div class="topbar-actions">
+          <button id="install-button" class="button button-outline install-button" type="button" hidden>Install app</button>
+          <button id="lock-account" class="button button-outline" type="button" hidden>Lock account</button>
+          <span class="privacy-chip"><span aria-hidden="true">●</span>Processed on this device</span>
+        </div>
+      </header>
+
+      <div class="content">
+        <section class="view-section is-visible" id="view-intake" aria-labelledby="intake-title">
+          <div class="page-heading">
+            <div>
+              <p class="eyebrow">SkinAssess AI · Private local account</p>
+              <h1 id="intake-title">Login</h1>
+              <p class="page-intro">Unlock your patient workspace with the phone number and password for this browser.</p>
+            </div>
+          </div>
+          <div class="notice notice-info" role="note">
+            <div><strong>Encrypted on this device</strong><p>Your account and analysis history are encrypted in this browser and unlocked with your password. There is no cloud sync or password recovery. Anyone with your password or access to an unlocked session may see your information.</p></div>
+          </div>
+          <div class="auth-switch" role="group" aria-label="Account action">
+            <button class="button button-primary" type="button" data-auth-mode="login" aria-pressed="true">Login</button>
+            <button class="button button-outline" type="button" data-auth-mode="create" aria-pressed="false">Create local account</button>
+          </div>
+          <form id="patient-intake-form" class="patient-form">
+            <section class="card form-card" aria-labelledby="intake-contact-heading">
+              <div class="section-heading">
+                <div><p class="eyebrow">Account access</p><h2 id="intake-contact-heading">Sign in to your account</h2></div>
+              </div>
+              <div class="form-grid">
+                <label class="form-field">Patient name
+                  <input name="patientName" type="text" autocomplete="name" maxlength="120" required>
+                </label>
+                <label class="form-field">Patient phone number
+                  <input name="phoneNumber" type="tel" autocomplete="username" inputmode="tel" minlength="7" maxlength="20" pattern="[0-9+\(\). \-]{7,20}" placeholder="Include country code if needed" required>
+                </label>
+                <label class="form-field">Password
+                  <input name="password" type="password" autocomplete="current-password" minlength="12" maxlength="128" aria-describedby="password-help" required>
+                  <span id="password-help" class="supporting-text">Use at least 12 characters. Keep it safe: this local account has no password recovery.</span>
+                </label>
+                <label class="form-field create-account-field" hidden>Confirm password
+                  <input name="passwordConfirm" type="password" autocomplete="new-password" minlength="12" maxlength="128" disabled>
+                </label>
+                <fieldset class="form-field choice-field create-account-field" hidden>
+                  <legend>Visit type</legend>
+                  <label><input type="radio" name="visitType" value="Clinic visit" disabled> Clinic visit</label>
+                  <label><input type="radio" name="visitType" value="General user"> General user</label>
+                </fieldset>
+                <fieldset class="form-field choice-field create-account-field" hidden>
+                  <legend>Has a doctor provided a medical assessment?</legend>
+                  <label><input type="radio" name="doctorAssessment" value="Yes" disabled> Yes</label>
+                  <label><input type="radio" name="doctorAssessment" value="No"> No</label>
+                </fieldset>
+                <div id="doctor-fields" class="form-grid doctor-fields create-account-field" hidden>
+                  <label class="form-field">Doctor name
+                    <input name="doctorName" type="text" autocomplete="off" maxlength="120" disabled>
+                  </label>
+                  <label class="form-field">Doctor phone number
+                    <input name="doctorPhone" type="tel" autocomplete="off" inputmode="tel" minlength="7" maxlength="20" pattern="[0-9+\(\). \-]{7,20}" disabled>
+                  </label>
+                </div>
+              </div>
+              <div id="legacy-history-notice" class="notice legacy-history-notice" hidden>
+                <div><strong>Previous local records found</strong><p id="legacy-history-text"></p>
+                  <label id="import-legacy-consent" class="consent-check"><input id="import-legacy-history" type="checkbox"> I confirm these records belong to me and should be encrypted into this account.</label>
+                  <button id="delete-legacy-history" class="button button-outline button-small" type="button">Delete unclaimed records</button>
+                </div>
+              </div>
+              <p id="intake-status" class="app-status" role="status" aria-live="polite"></p>
+              <button id="auth-submit" class="button button-primary submit-analysis" type="submit">Login</button>
+            </section>
+          </form>
+        </section>
+
+        <section class="view-section" id="view-dashboard" aria-labelledby="dashboard-title" hidden>
+          <div class="page-heading">
+            <div>
+              <p class="eyebrow">SkinAssess AI · Patient workspace</p>
+              <h1 id="dashboard-title">Welcome, <span id="welcome-patient-name">Patient</span></h1>
+              <p class="page-intro">Enter the requested details and select a clear image to view the research model’s classification output.</p>
+              <p id="patient-summary" class="supporting-text"></p>
+            </div>
+            <button class="button button-outline" type="button" id="dashboard-lock-account">Lock account</button>
+          </div>
+
+          <div class="notice notice-info" role="note">
+            <div><strong>Medical information</strong><p>Review your image classification and suggested next steps with a qualified healthcare professional, who can provide a clinical diagnosis and personalized care.</p></div>
+          </div>
+
+          <form id="patient-form" class="patient-form">
+            <section class="card form-card" aria-labelledby="patient-heading">
+              <div class="section-heading">
+                <div><p class="eyebrow">1 · Lesion details</p><h2 id="patient-heading">Skin and medical details</h2><p class="supporting-text">Complete each item; genetic and medical conditions are optional.</p></div>
+              </div>
+              <div class="form-grid">
+                <label class="form-field">Age group
+                  <select name="ageGroup" required>
+                    <option value="">Choose age group</option>
+                    <option>Under 18</option><option>18–29</option><option>30–44</option><option>45–59</option><option>60+</option>
+                  </select>
+                </label>
+                <label class="form-field">Gender
+                  <select name="gender" required>
+                    <option value="">Choose gender</option><option>Female</option><option>Male</option>
+                  </select>
+                </label>
+                <label class="form-field">Duration of lesion (days)
+                  <input name="durationDays" type="number" min="0" max="36500" inputmode="numeric" required>
+                </label>
+                <label class="form-field">Symptoms
+                  <input name="symptoms" type="text" maxlength="500" placeholder="Describe any symptoms" required>
+                </label>
+
+                <fieldset class="form-field choice-field" data-require-one>
+                  <legend>Sensation (select all that apply)</legend>
+                  <label><input type="checkbox" name="sensation" value="Itching"> Itching</label>
+                  <label><input type="checkbox" name="sensation" value="Pain"> Pain</label>
+                  <label><input type="checkbox" name="sensation" value="Burning"> Burning</label>
+                  <label><input type="checkbox" name="sensation" value="None"> None</label>
+                </fieldset>
+                <fieldset class="form-field choice-field" data-require-one>
+                  <legend>Colour (select all that apply)</legend>
+                  <label><input type="checkbox" name="color" value="Red"> Red</label>
+                  <label><input type="checkbox" name="color" value="Pink"> Pink</label>
+                  <label><input type="checkbox" name="color" value="Brown"> Brown</label>
+                  <label><input type="checkbox" name="color" value="Black"> Black</label>
+                  <label><input type="checkbox" name="color" value="White"> White</label>
+                  <label><input type="checkbox" name="color" value="Purple"> Purple</label>
+                </fieldset>
+
+                <fieldset class="form-field choice-field">
+                  <legend>Allergic to sun?</legend>
+                  <label><input type="radio" name="sunAllergy" value="Yes" required> Yes</label>
+                  <label><input type="radio" name="sunAllergy" value="No"> No</label>
+                </fieldset>
+                <label class="form-field">Genetic condition (optional)
+                  <input name="geneticCondition" type="text" maxlength="500" placeholder="Enter a condition, or leave blank">
+                </label>
+
+                <fieldset class="form-field choice-field">
+                  <legend>Low immunity?</legend>
+                  <label><input type="radio" name="lowImmunity" value="Yes" required> Yes</label>
+                  <label><input type="radio" name="lowImmunity" value="No"> No</label>
+                </fieldset>
+                <label class="form-field">Medical condition (optional)
+                  <input name="medicalCondition" type="text" maxlength="500" placeholder="Enter relevant conditions, or leave blank">
+                </label>
+
+                <fieldset class="form-field choice-field" data-require-one>
+                  <legend>Bleeding, oozing, or crusting? (select all that apply)</legend>
+                  <label><input type="checkbox" name="skinChange" value="Bleeding"> Bleeding</label>
+                  <label><input type="checkbox" name="skinChange" value="Oozing"> Oozing</label>
+                  <label><input type="checkbox" name="skinChange" value="Crusting"> Crusting</label>
+                  <label><input type="checkbox" name="skinChange" value="None"> None</label>
+                </fieldset>
+                <fieldset class="form-field choice-field">
+                  <legend>Rapid growth?</legend>
+                  <label><input type="radio" name="rapidGrowth" value="Yes" required> Yes</label>
+                  <label><input type="radio" name="rapidGrowth" value="No"> No</label>
+                </fieldset>
+              </div>
+            </section>
+
+            <section class="card form-card upload-card" aria-labelledby="upload-heading">
+              <div class="section-heading">
+                <div><p class="eyebrow">2 · Image</p><h2 id="upload-heading">Upload a skin image</h2></div>
+                <span class="status-pill status-muted">Image stays on this device</span>
+              </div>
+              <div id="dropzone" class="dropzone" role="region" aria-label="Drop an image file here">
+                <span class="upload-symbol" aria-hidden="true">↑</span>
+                <strong>Drag and drop an image here</strong>
+                <p>Or select a browser-supported image from your device.</p>
+                <button class="button button-primary" id="upload-button" type="button">Choose image</button>
+                <input id="image-selector" class="visually-hidden" type="file" accept="image/*" aria-label="Choose an image">
+              </div>
+              <div id="image-preview-wrap" class="image-preview-wrap" hidden>
+                <div class="preview-heading"><div><h3>Selected image</h3><p id="file-summary" class="supporting-text"></p></div><button class="button button-outline button-small" type="button" id="remove-images">Clear image</button></div>
+                <img id="selected-image" class="selected-image" alt="Selected skin image preview" hidden>
+              </div>
+              <p class="file-support-note">Analyses are encrypted and saved to this local account’s history. They are available only after signing in on this browser. Lock your account when you finish.</p>
+              <p id="app-status" class="app-status" role="status" aria-live="polite">Loading the trained 7-class model…</p>
+              <button class="button button-primary submit-analysis" id="analyze-button" type="submit" disabled>Analyze image</button>
+            </section>
+          </form>
+
+          <section class="card history-preview-card" aria-labelledby="history-preview-title">
+            <div class="section-heading">
+              <div><p class="eyebrow">Saved on this device</p><h2 id="history-preview-title">Previous analyses</h2></div>
+              <button class="text-button" type="button" data-view="history">View history <span aria-hidden="true">→</span></button>
+            </div>
+            <div id="dashboard-history" class="history-list"></div>
+            <p id="dashboard-history-empty" class="empty-state">No analyses have been saved for this account yet.</p>
+            <p id="dashboard-history-status" class="app-status" role="status" aria-live="polite"></p>
+          </section>
+        </section>
+
+        <section class="view-section" id="view-results" aria-labelledby="results-title" hidden>
+          <div class="page-heading">
+            <div><p class="eyebrow">Model output</p><h1 id="results-title">Analysis result</h1><p id="result-date" class="page-intro"></p></div>
+            <button class="button button-outline" type="button" data-view="dashboard">New analysis</button>
+          </div>
+          <div class="analysis-grid">
+            <section class="card result-card" aria-labelledby="prediction-title">
+              <div class="section-heading"><div><p class="eyebrow">Predicted category</p><h2 id="prediction-title">—</h2></div><span id="prediction-score" class="score-pill"></span></div>
+              <p id="score-explanation" class="supporting-text">Model score; not calibrated clinical confidence.</p>
+              <img id="result-image" class="selected-image result-image" alt="Image used for this model output" hidden>
+              <h3>Other model scores</h3>
+              <ol id="prediction-list" class="prediction-list"></ol>
+              <div class="report-actions"><button id="print-report" class="button button-primary" type="button">Print / Save as PDF</button><button class="button button-outline" type="button" data-view="history">Previous analyses</button></div>
+            </section>
+            <aside class="card guidance-card">
+              <p class="eyebrow">Patient information</p><h2>Details provided</h2>
+              <dl id="result-patient-details" class="details-list"></dl>
+              <p class="file-support-note">A clinician should assess the image and patient history. The model does not generate a personalized medical assessment.</p>
+            </aside>
+          </div>
+          <section class="card next-step-card" aria-labelledby="next-step-title">
+            <p class="eyebrow">General educational information</p>
+            <h2 id="next-step-title">Next steps for this category</h2>
+            <p id="next-step-category" class="supporting-text"></p>
+            <p id="next-step-context"></p>
+            <h3>What to do next</h3>
+            <p id="next-step-action"></p>
+            <p class="file-support-note">This is general educational guidance. A qualified healthcare professional can assess the lesion and determine whether examination, biopsy, or treatment is appropriate for you.</p>
+          </section>
+          <article id="report-card" class="card report-card" aria-labelledby="report-title">
+            <div class="report-heading"><p class="eyebrow">SkinAssess AI</p><h2 id="report-title">Skin lesion model report</h2><p id="report-reference" class="supporting-text"></p></div>
+            <img id="report-image" class="report-image" alt="Image included in the analysis report" hidden>
+            <div id="report-body" class="report-body"></div>
+            <p class="report-disclaimer">This report records an AI-assisted image classification and user-provided information for educational discussion. A qualified healthcare professional can provide a clinical diagnosis and personalized treatment recommendations.</p>
+          </article>
+        </section>
+
+        <section class="view-section" id="view-history" aria-labelledby="history-title" hidden>
+          <div class="page-heading">
+            <div><p class="eyebrow">Saved on this device</p><h1 id="history-title">Previous analyses</h1><p class="page-intro">View saved results and print or save a report as PDF.</p></div>
+            <button class="button button-primary" type="button" data-view="dashboard">New analysis</button>
+          </div>
+          <div class="notice notice-info" role="note"><div><strong>Encrypted account history</strong><p>Patient details, images, and results are encrypted in this browser and require your account password. There is no cloud backup or password recovery. Lock your account when you finish, and use a device you trust.</p></div></div>
+          <div id="history-list" class="history-list history-page-list"></div>
+          <p id="history-empty" class="empty-state">No saved analyses for this account yet. Completed analyses are encrypted and added here automatically.</p>
+          <p id="history-status" class="app-status" role="status" aria-live="polite"></p>
+          <button id="clear-history" class="button button-outline button-small" type="button">Delete all saved analyses</button>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <div class="progress-bar" hidden aria-hidden="true"></div>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.22.0/dist/tf.min.js"></script>
+  <script src="jscript/app_startup_code.js"></script>
+  <script src="jscript/app_batch_prediction_code.js"></script>
+  <script src="jscript/ui.js"></script>
+  <script src="jscript/pwa.js"></script>
+</body>
+</html>

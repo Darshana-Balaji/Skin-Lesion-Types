@@ -361,7 +361,7 @@ patientForm.addEventListener("submit", async (event) => {
     console.error("Image analysis failed:", error);
     appStatusElement.textContent = `Analysis could not be completed: ${error.message}`;
   } finally {
-    analyzeButton.disabled = !model;
+    analyzeButton.disabled = false;
   }
 });
 

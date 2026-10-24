@@ -14,7 +14,6 @@ const expectedClassNames = [
 
 const selectedImage = document.getElementById("selected-image");
 const modelStatusElement = document.getElementById("app-status");
-const modelAnalyzeButton = document.getElementById("analyze-button");
 
 function setAppStatus(message) {
   modelStatusElement.dataset.modelState = message;
@@ -44,7 +43,6 @@ async function loadTrainedModel() {
 
   model = candidate;
   modelClassNames = candidateClassNames;
-  modelAnalyzeButton.disabled = false;
   setAppStatus("Trained 7-class model ready. Results are research model outputs, not diagnoses.");
 }
 

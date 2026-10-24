@@ -1,4 +1,4 @@
-const CACHE_NAME = "skin-lesion-analyzer-v33";
+const CACHE_NAME = "skin-lesion-analyzer-v34";
 const APP_SHELL = [
   "./",
   "./index.html",

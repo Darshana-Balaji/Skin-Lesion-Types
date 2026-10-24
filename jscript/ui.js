@@ -501,7 +501,7 @@ function renderResult(record, imageSource) {
   const reportBody = document.getElementById("report-body");
   reportBody.replaceChildren();
   appendReportSection(reportBody, "Model output", [
-    ["Predicted category", rankedScores[0].className],
+    ["Closest matching category", rankedScores[0].className],
     ["Model score", `${(rankedScores[0].score * 100).toFixed(1)}%`],
     ["Image file", record.filename]
   ]);

@@ -1,4 +1,4 @@
-const CACHE_NAME = "skin-lesion-analyzer-v35";
+const CACHE_NAME = "skin-lesion-analyzer-v36";
 const APP_SHELL = [
   "./",
   "./index.html",
@@ -13,6 +13,7 @@ const APP_SHELL = [
   "./jscript/ui.js",
   "./jscript/pwa.js",
   "./assets/app-icon.svg",
+  "./assets/diya-logo.png",
   "./assets/robotfavicon.png",
   "./trained_model_7class/class_names.json",
   "./trained_model_7class/model.json",

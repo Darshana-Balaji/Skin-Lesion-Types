@@ -1,5 +1,5 @@
 
-## SkinAssess AI
+## DIYA — Derma.In.Your.Area
 
 This is a static, browser-based PWA. It starts at Login. Patients enter their
 name, phone number, and account password in that order, then the dashboard

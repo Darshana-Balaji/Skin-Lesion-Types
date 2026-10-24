@@ -1,7 +1,7 @@
 {
   "id": "./",
-  "name": "SkinAssess AI",
-  "short_name": "SkinAssess",
+  "name": "DIYA — Derma.In.Your.Area",
+  "short_name": "DIYA",
   "description": "Skin lesion image classification research model. Model output is not a medical diagnosis.",
   "start_url": "./",
   "scope": "./",

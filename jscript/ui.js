@@ -183,7 +183,6 @@ document.getElementById("delete-legacy-history").addEventListener("click", async
 });
 
 document.getElementById("lock-account").addEventListener("click", lockAccount);
-document.getElementById("dashboard-lock-account").addEventListener("click", lockAccount);
 
 function lockAccount() {
   accountCryptoKey = null;
